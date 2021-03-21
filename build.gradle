@@ -1,0 +1,45 @@
+plugins {
+	id "com.github.roroche.plantuml" version "1.0.2" // (1)
+	id "org.fmiw.plantuml" version "0.1"
+}
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'de.mrgeorgen.v2g.powerGrid'
+
+// tag::repositories[]
+repositories {
+    mavenCentral()
+}
+// end::repositories[]
+
+// tag::jar[]
+jar {
+    archiveBaseName = 'v2g'
+    archiveVersion =  '0.1.0'
+}
+// end::jar[]
+
+// tag::dependencies[]
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+}
+
+classDiagram {
+	packageName = 'de.mrgeorgen.v2g'
+	outputFile = project.file('class_diagram.plantuml')
+}
+
+plantuml {
+	options {
+		format = 'png'
+	}
+	diagrams {
+		class_diagram {
+			sourceFile = project.file('class_diagram_custom.plantuml')
+		}
+	}
+}
+buildClassDiagram.dependsOn(build)

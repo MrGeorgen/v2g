@@ -1,0 +1,37 @@
+@startuml
+
+class "car" {
+  battery : int
+  fullBattery : int
+  chargeLock : int
+  chargeSpeed : int
+  model : String
+  id : int
+  charge()
+  setChargeLock(double chargeLock)
+  double getBatteryRelativ()
+}
+
+class "carGrid" {
+  dockedCars : ArrayList<car>
+  models : carTemplate[]
+  chargeCars()
+  fillWithCars()
+}
+
+class "carTemplate" {
+  model : String
+  chargeSpeed : int
+  fullBattery : int
+  range : int
+}
+
+class "powerGrid" {
+  energieAvailable : int
+}
+
+"carGrid" --> "*" "car" : dockedCars
+"powerGrid" --> "carGrid"
+"carGrid" --> "carTemplate"
+
+@enduml
