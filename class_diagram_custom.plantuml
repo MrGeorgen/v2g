@@ -28,6 +28,7 @@ class "carTemplate" {
 
 class "powerGrid" {
   energieAvailable : int
+  savedEnergie : int
 }
 
 "carGrid" --> "*" "car" : dockedCars

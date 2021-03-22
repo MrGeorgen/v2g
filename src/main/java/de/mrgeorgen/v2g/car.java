@@ -24,8 +24,9 @@ public class car {
 		if(chargeAmmount != 0) System.out.println(this.model + " nr. " + this.id + " is " + (chargeAmmount < 0 ? "dis" : "") + "charging with " + (double)Math.abs(chargeAmmount) / 1000 +  " kW. battery: " + (double)this.battery / 1000 + "/" + (double)this.fullBattery / 1000 + " kWh (" + Math.round(getBatteryRelativ() * 100) + "%)");
 		this.battery += chargeAmmount;
 		powerGrid.energieAvailable -= chargeAmmount;
+		if(chargeAmmount < 0) powerGrid.savedEnergie += Math.abs(chargeAmmount);
     	}
-	public void setChargeLock(double chargeLock) {
+	private void setChargeLock(double chargeLock) {
 		this.chargeLock = (int)(this.fullBattery * chargeLock);
 	}
 	public double getBatteryRelativ() {

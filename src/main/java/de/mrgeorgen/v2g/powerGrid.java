@@ -2,12 +2,13 @@ package de.mrgeorgen.v2g;
 import java.util.Random;
 public class powerGrid {
 	public static int energieAvailable;
+	public static int savedEnergie;
 	public static void main(String args[]) {
-		final carGrid carGrid = new carGrid();
 		if(args.length != 1) {
 			System.out.println("Invalid Syntax. Use the number of days the simulation shell run as the first argument");
 			return;
 		}
+		final carGrid carGrid = new carGrid();
 		carGrid.fillWithCars();
 		final int hourSimulationRuns = Integer.parseInt(args[0]) * 24;
 		Random random = new Random();
@@ -22,5 +23,6 @@ public class powerGrid {
 			energieAvailable = (int)(averageEnergie * (0.5 + 1.5 * random.nextDouble()));
 			carGrid.chargeCars();
 		}
+		System.out.println("vehicle to grid saved " + (double)savedEnergie / 1000 + " kWh with " + carGrid.dockedCars.size() + " cars");
 	}
 }
