@@ -7,9 +7,9 @@ public class carTemplate {
 	public final int range;
 
 	public carTemplate(String model, int fullBattery, int chargeSpeed, int range) {
+		this.fullBattery = 1000 * fullBattery; // convert kWh to Wh
+		this.chargeSpeed = chargeSpeed * 1000; // convert kW to W
 		this.model = model;
-		this.chargeSpeed = chargeSpeed;
-		this.fullBattery = fullBattery;
 		this.range = range;
 	}
 }

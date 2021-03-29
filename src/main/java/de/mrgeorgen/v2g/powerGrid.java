@@ -10,6 +10,8 @@ public class powerGrid {
 		}
 		final carGrid carGrid = new carGrid();
 		carGrid.fillWithCars();
+		car[] allCars = new car[carGrid.dockedCars.size()];
+		allCars = carGrid.dockedCars.toArray(allCars);
 		final int hourSimulationRuns = Integer.parseInt(args[0]) * 24;
 		Random random = new Random();
 		for(int houresPassed = 0; houresPassed < hourSimulationRuns; ++houresPassed) {

@@ -19,7 +19,7 @@ public class carGrid {
 		for(carTemplate carModel : models) {
 			final int numberOfCars = random.nextInt(10);
 			for(int i = 0; i < numberOfCars; ++i) {
-				dockedCars.add(new car(carModel.model, carModel.fullBattery, carModel.chargeSpeed, i));
+				dockedCars.add(new car(carModel, i));
 			}
 		}
 	}
