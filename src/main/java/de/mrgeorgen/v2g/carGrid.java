@@ -8,7 +8,7 @@ import java.util.Random;
 import de.mrgeorgen.v2g.car;
 import de.mrgeorgen.v2g.carGrid;
 public class carGrid {
-	public int energieAvailable;
+	private final int id;
 	public ArrayList<car> dockedCars = new ArrayList<car>();
 	private final carTemplate[] models = {new carTemplate("Tesla Model 3", 50, 160, 335),
 	new carTemplate("Renault Zoe ZE50", 52, 46, 315),
@@ -18,13 +18,13 @@ public class carGrid {
 	new carTemplate("Tesla Model S Long Range", 90, 250, 555),
 	new carTemplate("Smart EQ forfour", 17, 5, 95),
 	new carTemplate("Honda e", 29, 56, 170)};
-	public carGrid() {
+	public carGrid(int id) {
+		this.id = id;
 		Random random = new Random();
 		for(carTemplate carModel : models) {
 			final int numberOfCars = random.nextInt(10);
 			for(int i = 0; i < numberOfCars; ++i) {
-				final car car = new car(carModel, i); 
-				dockedCars.add(car);
+				dockedCars.add(new car(carModel));
 			}
 		}
 	}
@@ -41,6 +41,7 @@ public class carGrid {
 		for(car car : dockedCars) {
 			charged += car.charge(maxCharge - charged);
 		}
+		if(powerGrid.logLevel >= 2 && charged != 0) System.out.println("carGrid " + id + " " + (charged < 0 ? "dis" : "") + "charged " + dockedCars.size() + " cars with " + (double)Math.abs(charged) / 1000 + " kW");
 		return charged;
 	}
 	public int capacityDockedCars() {
@@ -55,6 +56,6 @@ public class carGrid {
 		for(car car : dockedCars) {
 			battery += car.battery;
 		}
-		return ((double)battery + energieAvailable) / capacityDockedCars();
+		return (double)battery / capacityDockedCars();
 	}
 }
