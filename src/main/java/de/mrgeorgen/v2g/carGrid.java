@@ -1,10 +1,14 @@
 package de.mrgeorgen.v2g;
+import java.lang.Double;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Collections;
 import java.util.Comparator;
-import java.lang.Double;
+import java.util.Random;
+
+import de.mrgeorgen.v2g.car;
+import de.mrgeorgen.v2g.carGrid;
 public class carGrid {
+	public int energieAvailable;
 	public ArrayList<car> dockedCars = new ArrayList<car>();
 	private final carTemplate[] models = {new carTemplate("Tesla Model 3", 50, 160, 335),
 	new carTemplate("Renault Zoe ZE50", 52, 46, 315),
@@ -14,16 +18,17 @@ public class carGrid {
 	new carTemplate("Tesla Model S Long Range", 90, 250, 555),
 	new carTemplate("Smart EQ forfour", 17, 5, 95),
 	new carTemplate("Honda e", 29, 56, 170)};
-	public void fillWithCars() {
+	public carGrid() {
 		Random random = new Random();
 		for(carTemplate carModel : models) {
 			final int numberOfCars = random.nextInt(10);
 			for(int i = 0; i < numberOfCars; ++i) {
-				dockedCars.add(new car(carModel, i));
+				final car car = new car(carModel, i); 
+				dockedCars.add(car);
 			}
 		}
 	}
-	public void chargeCars() {
+	public int chargeCars(int maxCharge) {
 		Collections.sort(dockedCars, new Comparator<car>() {
 			public int compare(car car1, car car2) {
 				Double car1RelativBattery = car1.getBatteryRelativ();
@@ -31,11 +36,25 @@ public class carGrid {
 				return car1RelativBattery.compareTo(car2RelativBattery);
 			}
 		});
-		if(powerGrid.energieAvailable < 0) Collections.reverse(dockedCars);
-		dockedCars.forEach((car car) -> {
-			car.charge();
-		});
-		if(powerGrid.energieAvailable > 0) System.out.println(powerGrid.energieAvailable + " W could not be used by the cars");
-		else if(powerGrid.energieAvailable < 0) System.out.println(Math.abs(powerGrid.energieAvailable) + " W could not be taken from the cars");
+		if(maxCharge < 0) Collections.reverse(dockedCars);
+		int charged = 0;
+		for(car car : dockedCars) {
+			charged += car.charge(maxCharge - charged);
+		}
+		return charged;
+	}
+	public int capacityDockedCars() {
+		int maxBattery = 0;
+		for(car car : dockedCars) {
+			maxBattery += car.carModel.fullBattery;
+		}
+		return maxBattery;
+	}
+	public double relativeChargeState() {
+		int battery = 0;
+		for(car car : dockedCars) {
+			battery += car.battery;
+		}
+		return ((double)battery + energieAvailable) / capacityDockedCars();
 	}
 }
