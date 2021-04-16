@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
-import de.mrgeorgen.v2g.car;
-import de.mrgeorgen.v2g.carGrid;
 public class carGrid {
 	private final int id;
 	public ArrayList<car> dockedCars = new ArrayList<car>();
@@ -24,11 +22,11 @@ public class carGrid {
 		for(carTemplate carModel : models) {
 			final int numberOfCars = random.nextInt(10);
 			for(int i = 0; i < numberOfCars; ++i) {
-				dockedCars.add(new car(carModel));
+				dockedCars.add(new car(this, carModel));
 			}
 		}
 	}
-	public int chargeCars(int maxCharge) {
+	public int chargeCars(int maxPower) {
 		Collections.sort(dockedCars, new Comparator<car>() {
 			public int compare(car car1, car car2) {
 				Double car1RelativBattery = car1.getBatteryRelativ();
@@ -36,10 +34,10 @@ public class carGrid {
 				return car1RelativBattery.compareTo(car2RelativBattery);
 			}
 		});
-		if(maxCharge < 0) Collections.reverse(dockedCars);
+		if(maxPower < 0) Collections.reverse(dockedCars);
 		int charged = 0;
 		for(car car : dockedCars) {
-			charged += car.charge(maxCharge - charged);
+			charged += car.charge(maxPower - charged);
 		}
 		if(powerGrid.logLevel >= 2 && charged != 0) System.out.println("carGrid " + id + " " + (charged < 0 ? "dis" : "") + "charged " + dockedCars.size() + " cars with " + (double)Math.abs(charged) / 1000 + " kW");
 		return charged;
