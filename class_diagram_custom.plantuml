@@ -1,22 +1,30 @@
 @startuml
 
 class "car" {
+  carModel : carTemplate
   battery : int
-  fullBattery : int
   chargeLock : int
-  chargeSpeed : int
-  model : String
-  id : int
-  charge()
-  setChargeLock(double chargeLock)
-  double getBatteryRelativ()
+  drivesToWorkHour : int
+  drivesFromWorkHour : int
+  homeCarGrid : carGrid
+  workCarGrid : carGrid
+  driveToWorkPower : int
+  hoursToWork : int
+  stuck : boolean
+  carName : String
+  speed : int
+  workDistance : int
+  charge(int) : int
+  tickDrive(int)
 }
 
 class "carGrid" {
+  id : int
   dockedCars : ArrayList<car>
   models : carTemplate[]
-  chargeCars()
-  fillWithCars()
+  capacityDockedCars() : int
+  chargeCars(int) : int
+  relativeChargeState() : double
 }
 
 class "carTemplate" {
@@ -27,12 +35,11 @@ class "carTemplate" {
 }
 
 class "powerGrid" {
-  energieAvailable : int
-  savedEnergie : int
+  {static} logLevel : int
+  {static} main(String[])
 }
 
-"carGrid" --> "*" "car" : dockedCars
-"powerGrid" --> "carGrid"
-"carGrid" --> "carTemplate"
+"car" "*" <-> "carGrid" : homeCarGrid/workCarGrid/dockedCars
+"car" --> "carTemplate" : carModel
 
 @enduml
